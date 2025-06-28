@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function useWeather(latitude, longitude) {
   const [weather, setWeather] = useState(null);
@@ -15,9 +15,12 @@ export default function useWeather(latitude, longitude) {
     if (latitude === null || longitude === null) return;
     async function fetchWeather() {
       try {
-        console.log(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`)
+        console.log(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`
+        );
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`);
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`
+        );
         if (!response.ok) {
           throw new Error(`Open-Meteo HTTP ошибка: ${response.status}`);
         }

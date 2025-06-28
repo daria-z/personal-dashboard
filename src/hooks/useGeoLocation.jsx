@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function useGeolocation() {
   const [city, setCity] = useState(null);
@@ -22,13 +22,19 @@ export default function useGeolocation() {
     async function handleSuccess(position) {
       const { latitude, longitude } = position.coords;
       setLocation({ latitude, longitude });
-
       try {
-        let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`, {
-          headers: { 'User-Agent': 'YourAppName' }
-        });
+        let response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+          {
+            headers: { 'User-Agent': 'YourAppName' },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Nominatim HTTP ошибка: ${response.status}`);
+        }
         const data = await response.json();
-        const city = data.address.city || data.address.town || data.address.village;
+        const city =
+          data.address.city || data.address.town || data.address.village;
         setCity(city);
       } catch (error) {
         setError(error);

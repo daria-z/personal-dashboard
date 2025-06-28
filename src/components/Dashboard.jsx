@@ -1,5 +1,5 @@
-import styles from "./Dashboard.module.css";
-import WeatherCard from "./WeatherCard";
+import styles from './Dashboard.module.css';
+import WeatherCard from './WeatherCard';
 
 export default function Dashboard() {
   return (
@@ -10,9 +10,7 @@ export default function Dashboard() {
       <main className={styles.cardsContainer}>
         <WeatherCard />
       </main>
-      <footer>
-
-      </footer>
+      <footer></footer>
     </div>
   );
-};
+}
