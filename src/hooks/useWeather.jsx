@@ -15,18 +15,15 @@ export default function useWeather(latitude, longitude) {
     if (latitude === null || longitude === null) return;
     async function fetchWeather() {
       try {
-        console.log(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`
-        );
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&hourly=temperature_2m,precipitation&lang=ru`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
         );
         if (!response.ok) {
           throw new Error(`Open-Meteo HTTP ошибка: ${response.status}`);
         }
         const data = await response.json();
-
-        setWeather(data.current.weather_code);
+        console.log(data);
+        setWeather(data.weather[0]);
       } catch (error) {
         setError('Ошибка при получении данных погоды: ' + error);
       }
