@@ -42,7 +42,7 @@ export default [
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
-      // 'react/prop-types': 'off'
+      'react/prop-types': 'off',
     },
     settings: {
       react: {
