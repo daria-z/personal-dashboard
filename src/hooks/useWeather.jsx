@@ -13,7 +13,7 @@ export default function useWeather(latitude, longitude) {
 
   useEffect(() => {
     if (latitude === null || longitude === null) return;
-    async function fetchWeather() {
+    const fetchWeather = async () => {
       try {
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
@@ -27,7 +27,7 @@ export default function useWeather(latitude, longitude) {
       } catch (error) {
         setError('Ошибка при получении данных погоды: ' + error);
       }
-    }
+    };
     fetchWeather();
   }, [latitude, longitude, trigger]);
 

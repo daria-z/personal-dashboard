@@ -16,7 +16,7 @@ const WeatherCard = () => {
           <div className="weater-main">
             <div className="city">{city}</div>
             <div className="temp">температура</div>
-            <div className="description">{weather.main}</div>
+            <div className="description">{weather?.main}</div>
           </div>
         </div>
       </div>

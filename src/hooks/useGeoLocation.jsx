@@ -19,7 +19,7 @@ export default function useGeolocation() {
       return;
     }
 
-    async function handleSuccess(position) {
+    const handleSuccess = async (position) => {
       const { latitude, longitude } = position.coords;
       setLocation({ latitude, longitude });
       try {
@@ -39,7 +39,7 @@ export default function useGeolocation() {
       } catch (error) {
         setError(error);
       }
-    }
+    };
 
     function handleError(error) {
       setError(error.message);
