@@ -1,35 +1,60 @@
 import { useState, useEffect } from 'react';
 
-export default function useWeather(latitude, longitude) {
+export default function useWeather() {
+  const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const [trigger, setTrigger] = useState(0);
 
   const refresh = () => {
     setWeather(null);
+    setLocation(null);
     setError(null);
     setTrigger((prev) => prev + 1);
   };
 
   useEffect(() => {
-    if (latitude === null || longitude === null) return;
+    if (!navigator.geolocation) {
+      setError('Геолокация не поддерживается');
+      return;
+    }
+
+    const handleSuccess = async (position) => {
+      const { latitude, longitude } = position.coords;
+      setLocation({ latitude, longitude });
+    };
+
+    const handleError = (error) => {
+      setError(error.message);
+    };
+
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+  }, [trigger]);
+
+  useEffect(() => {
     const fetchWeather = async () => {
+      if (!location) return;
+
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
         );
         if (!response.ok) {
-          throw new Error(`Open-Meteo HTTP ошибка: ${response.status}`);
+          throw new Error(`OpenWeatherMap HTTP: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
-        setWeather(data.weather[0]);
+        if (data.weather && Array.isArray(data.weather)) {
+          setWeather(data.weather[0]);
+        } else {
+          throw new Error('Неверный формат данных погоды');
+        }
       } catch (error) {
-        setError('Ошибка при получении данных погоды: ' + error);
+        setError('Ошибка при получении данных погоды: ' + error.message);
       }
     };
+
     fetchWeather();
-  }, [latitude, longitude, trigger]);
+  }, [location]);
 
   return { weather, error, refresh };
 }
