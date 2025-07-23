@@ -38,11 +38,7 @@ export default function useWeather() {
 
       try {
         let response = await fetch(
-<<<<<<< Updated upstream
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
-=======
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.latitude}&lon=${location.longitude}`,
->>>>>>> Stashed changes
           {
             headers: { 'User-Agent': 'YourAppName' },
           }
