@@ -1,12 +1,7 @@
-import useGeolocation from '../hooks/useGeoLocation';
 import useWeather from '../hooks/useWeather';
 
 const WeatherCard = () => {
-  const { city, location } = useGeolocation();
-  const { weather } = useWeather(
-    location && location.latitude,
-    location && location.longitude
-  );
+  const { weather, city } = useWeather();
 
   return (
     <div className="weather-card">

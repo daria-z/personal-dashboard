@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 export default function useWeather() {
   const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   const [trigger, setTrigger] = useState(0);
 
@@ -36,6 +37,24 @@ export default function useWeather() {
       if (!location) return;
 
       try {
+        let response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+          {
+            headers: { 'User-Agent': 'YourAppName' },
+          }
+        );
+        if (!response.ok) {
+          throw new Error(`Nominatim HTTP ошибка: ${response.status}`);
+        }
+        const data = await response.json();
+        const city =
+          data.address.city || data.address.town || data.address.village;
+        setCity(city);
+      } catch (error) {
+        setError(error);
+      }
+
+      try {
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
         );
@@ -56,5 +75,5 @@ export default function useWeather() {
     fetchWeather();
   }, [location]);
 
-  return { weather, error, refresh };
+  return { weather, city, error, refresh };
 }
