@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 export default function useWeather() {
   const [location, setLocation] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [temp, setTemp] = useState(null);
   const [city, setCity] = useState(null);
   const [error, setError] = useState(null);
   const [trigger, setTrigger] = useState(0);
@@ -56,7 +57,7 @@ export default function useWeather() {
 
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}&units=metric`
         );
         if (!response.ok) {
           throw new Error(`OpenWeatherMap HTTP: ${response.status}`);
@@ -64,6 +65,7 @@ export default function useWeather() {
         const data = await response.json();
         if (data.weather && Array.isArray(data.weather)) {
           setWeather(data.weather[0]);
+          setTemp(data.main.temp);
         } else {
           throw new Error('Неверный формат данных погоды');
         }
@@ -75,5 +77,5 @@ export default function useWeather() {
     fetchWeather();
   }, [location]);
 
-  return { weather, city, error, refresh };
+  return { temp, weather, city, error, refresh };
 }
