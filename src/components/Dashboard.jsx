@@ -1,6 +1,7 @@
 import styles from './Dashboard.module.css';
 import WeatherCard from './WeatherCard';
 import FormComponent from './Form/FormComponent';
+import Video from './Video';
 
 export default function Dashboard() {
   return (
@@ -11,6 +12,7 @@ export default function Dashboard() {
       <main className={styles.cardsContainer}>
         <WeatherCard />
         <FormComponent />
+        <Video />
       </main>
       <footer></footer>
     </div>
