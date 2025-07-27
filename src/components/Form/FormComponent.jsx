@@ -1,49 +1,58 @@
 import { useState } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import FormField from './FormField';
+
+const validationSchema = Yup.object({
+  email: Yup.string().email('Некорректный email').required('Email обязателен'),
+  password: Yup.string()
+    .min(6, 'Пароль должен быть не менее 6 символов')
+    .required('Пароль обязателен'),
+});
+
 const FormComponent = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-  });
-
-  const [isSubmitted, submitData] = useState(false);
-
-  const handleChange = (e) => {
-    const { value, name } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    submitData(true);
-  };
+  const [submittedData, setSubmittedData] = useState(null);
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <FormField
-          label="Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          error={false}
-        />
-        <FormField
-          label="Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          error={false}
-        />
-        <button type="submit">Submit</button>
-      </form>
-      {isSubmitted && (
-        <div>
-          <h3>Отправленные данные</h3>
-          <p>Name: {formData.name}</p>
-          <p>Email: {formData.email}</p>
-        </div>
+    <Formik
+      initialValues={{ email: '', password: '' }}
+      validationSchema={validationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        setSubmittedData(values);
+        setSubmitting(false);
+      }}
+    >
+      {({ errors, touched, isSubmitting }) => (
+        <>
+          <Form>
+            <FormField
+              label="Email"
+              name="email"
+              type="email"
+              error={errors.email}
+              touched={touched.email}
+            />
+            <FormField
+              label="Password"
+              name="password"
+              type="password"
+              error={errors.password}
+              touched={touched.password}
+            />
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+          {submittedData && (
+            <div>
+              <h3>Отправленные данные</h3>
+              <p>Email: {submittedData.email}</p>
+              <p>Password: {submittedData.password}</p>
+            </div>
+          )}
+        </>
       )}
-    </>
+    </Formik>
   );
 };
 

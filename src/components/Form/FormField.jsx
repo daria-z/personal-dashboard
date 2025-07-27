@@ -1,15 +1,19 @@
-const FormField = ({ label, name, type, value, error, onChange }) => {
+import { Field } from 'formik';
+import './FormField.css';
+
+const FormField = ({ label, name, type, error, touched }) => {
   return (
-    <div>
-      <label htmlFor="">{label}</label>
-      <input
+    <div className="form-field-container">
+      <label htmlFor={name} className="form-field-label">
+        {label}
+      </label>
+      <Field
         id={name}
         name={name}
         type={type}
-        value={value}
-        onChange={onChange}
+        className={`form-field-input ${error && touched ? 'error' : ''}`}
       />
-      {error && <span>{error}</span>}
+      {error && touched && <span className="form-field-error">{error}</span>}
     </div>
   );
 };

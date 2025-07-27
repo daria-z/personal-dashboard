@@ -1,0 +1,23 @@
+.form-field-container {
+  margin-bottom: 15px;
+}
+
+.form-field-label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-field-input {
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-field-input.error {
+  border: 1px solid red;
+}
+
+.form-field-error {
+  color: red;
+  font-size: 12px;
+}
