@@ -2,6 +2,7 @@ import styles from './Dashboard.module.css';
 import WeatherCard from './WeatherCard';
 import FormComponent from './Form/FormComponent';
 import Video from './Video';
+import MarkdownEditor from './Editor';
 
 export default function Dashboard() {
   return (
@@ -13,6 +14,7 @@ export default function Dashboard() {
         <WeatherCard />
         <FormComponent />
         <Video />
+        <MarkdownEditor />
       </main>
       <footer></footer>
     </div>
