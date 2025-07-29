@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import './Video.css';
 
 const Video = () => {
   const videoRef = useRef(null);
@@ -19,19 +20,15 @@ const Video = () => {
     startVideo();
 
     return () => {
-      if (video.srcObject) {
+      if (video && video.srcObject) {
         video.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);
 
   return (
-    <div style={{ position: 'relative' }}>
-      <video
-        ref={videoRef}
-        autoPlay
-        style={{ width: '640px', height: '480px', display: 'block' }}
-      />
+    <div className="video-container">
+      <video ref={videoRef} className="video-element" autoPlay />
     </div>
   );
 };
