@@ -4,8 +4,9 @@ import WeatherCard from './WeatherCard';
 import FormComponent from './Form/FormComponent';
 import Video from './Video';
 import MarkdownEditor from './Editor';
+import ThemeSwitcher from './ThemeSwitcher';
 
-// const ThemeContext = createContext(null);
+export const ThemeContext = createContext(null);
 
 export default function Dashboard() {
   const [theme, setTheme] = useState('light');
@@ -15,29 +16,20 @@ export default function Dashboard() {
   }, [theme]);
 
   return (
-    // <ThemeContext.Provider value={theme}>
-    <div className={styles.appContainer}>
-      <header>
-        <h1></h1>
-      </header>
-      <main className={styles.cardsContainer}>
-        <label>
-          <input
-            type="checkbox"
-            checked={theme === 'dark'}
-            onChange={(e) => {
-              setTheme(e.target.checked ? 'dark' : 'light');
-            }}
-          />
-          Use {theme} mode
-        </label>
-        <WeatherCard />
-        <FormComponent />
-        <Video />
-        <MarkdownEditor />
-      </main>
-      <footer></footer>
-    </div>
-    // </ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <div className={styles.appContainer}>
+        <header>
+          <h1></h1>
+        </header>
+        <main className={styles.cardsContainer}>
+          <ThemeSwitcher />
+          <WeatherCard />
+          <FormComponent />
+          <Video />
+          <MarkdownEditor />
+        </main>
+        <footer></footer>
+      </div>
+    </ThemeContext.Provider>
   );
 }
